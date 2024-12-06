@@ -8,11 +8,13 @@
 
 local mod = require "lib.MeleeWeaponApi.mod" ---@class MeleeWeaponApiModReference
 
+local Util = mod.__Util
+
 ---https://wofsauge.github.io/IsaacDocs/rep/RNG.html
 local RNG_SHIFT_INDEX = 35
 
 ---@class IterableList
-local IterableList = mod.__AnimationList or {}
+local IterableList = {}
 IterableList.__index = IterableList
 
 ---@enum IterableListOrder
@@ -27,13 +29,30 @@ IterableList.Order = {
     Random = "Random",
 }
 
----@param data  unknown[]
----@param order IterableListOrder
+---@param  order unknown
+---@return IterableListOrder
+function IterableList.ValidateOrder(order)
+    order = Util.When(order, IterableList.Order)
+    if not order then error("Invalid order: " .. tostring(order)) end
+    return order
+end
+
+--[[Creates a list that you can iterate over using its methods.  
+    It always loops, meaning that calling `:Next()` when `:Current()` returns the  
+    last element of its chosen order will reset the counter and retrun the first
+    element of its chosen order.    
+    **Note:** Even though you can edit fields like `.__current`, `.__order`, etc,
+    I recommend using things like `:SetCurrent()` or `:SetOrder()` which include
+    a validation step to avoid bugs.
+    ]]
+---@param data      any[]
+---@param order?    IterableListOrder
 ---@return IterableList
 function IterableList.New(data, order)
-    ---@cast data table
+    order = IterableList.ValidateOrder(order or IterableList.Order.Default)
 
-    data.__order = order or IterableList.Order.Default
+    ---@cast data table
+    data.__order = order
     data.__current = 0
     data.__size = #data
     data.__rng = RNG(Game():GetSeeds():GetStartSeed(), RNG_SHIFT_INDEX)
@@ -42,12 +61,6 @@ function IterableList.New(data, order)
 
     ---@cast data IterableList
     return data
-end
-
----@param order IterableListOrder
-function IterableList:SetOrder(order)
-    self.__order = order
-    return self
 end
 
 function IterableList:RandomIndex()
@@ -79,10 +92,16 @@ function IterableList:Next()
     return self["Next" .. self.__order](self)
 end
 
+--[[Set the index for the current animation in the list.
+    If `index` is `nil`, sets it to the first of chosen order.  
+    Does nothing if chosen order is "Random".
+    ]]
 ---@param index integer
 function IterableList:SetCurrent(index)
+    if self.__order == "Random" then return end
+
     if index == nil then
-        index = 1
+        index = self.__order == "Default" and 1 or self.__size
     else
         assert(
             type(index) == "number" and index % 1 == 0 and index > 0 and index <= self.__size,
@@ -93,5 +112,5 @@ function IterableList:SetCurrent(index)
     return self:Current()
 end
 
-mod.__AnimationList = IterableList
-return IterableList
+Util.IterableList = IterableList.New
+mod.__Util = Util
