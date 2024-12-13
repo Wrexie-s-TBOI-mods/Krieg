@@ -127,7 +127,8 @@ Starts with **Buzzaxe** as pocket active item.
 - [ ] Lock API metatables
   *Note: For convenience and dev flexibility, this should be done at the end*
 - [x] Find a way to make modules peristent through `include`s
-  - [ ] Prevent registering the same callbacks *again* on `luamod`
+  - [x] Prevent registering the same callbacks *again* on `luamod`
+  - [x] Make callback module force-reloadable
 - [x] Make `EntityWeapon` a subclass of `EntityEffect`
 - [ ] EntityMelee
   - [ ] Docs
@@ -135,15 +136,13 @@ Starts with **Buzzaxe** as pocket active item.
     - [ ] Doc-comment *everything*
     - [ ] Mention parent ModCallback that runs EntityMelee property callbacks (useful for things like tick rate etc)
   - [ ] Sprite rotation
-    - [ ] `:Rotate()` — I still don't know if rotating the effect with the sprite is necessary
+    - [x] `:Rotate()` — I still don't know if rotating the effect with the sprite is necessary
     - [ ] `:SmootRotate()`
     - [ ] User friendly interpolation formula integration — with default(s)
       - [ ] Bézier generator ?
-  - [ ] Swing
+  - [x] Swing
     - [x] Animate
-    - [ ] Swing direction
     - [x] Swing target discriminator
-    - [ ] Custom hitboxes ?
     - [x] Callbacks
       - [x] `OnSwingStart`
       - [x] `OnSwingHit`
@@ -166,16 +165,16 @@ Starts with **Buzzaxe** as pocket active item.
     - [ ] `OnThrowStart`
     - [ ] `OnThrowHit`
     - [ ] `OnThrowEnd`
-  - [ ] Player input
-    - [ ] `IsPlayerAiming`
+  - [x] Player input
+    - [x] `IsPlayerAiming`
     - [x] `IsPlayerMoving`
-    - [ ] Callbacks
+    - [x] Callbacks
       - [x] `OnPlayerMoveStart`
       - [x] `OnPlayerMoveUpdate`
       - [x] `OnPlayerMoveEnd`
-      - [ ] `OnPlayerAimStart`
-      - [ ] `OnPlayerAimUpdate`
-      - [ ] `OnPlayerAimEnd`
+      - [x] `OnPlayerAimStart`
+      - [x] `OnPlayerAimUpdate`
+      - [x] `OnPlayerAimEnd`
 
 ---
 
