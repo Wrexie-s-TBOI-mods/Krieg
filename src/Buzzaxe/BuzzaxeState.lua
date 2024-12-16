@@ -10,7 +10,7 @@
 local mod = require "src.mod"
 local Buzzaxe = mod.__Buzzaxe or include "src.Buzzaxe.Buzzaxe" ---@class Buzzaxe
 
-local Util = include "lib.MeleeWeaponApi.Util.init"
+local Util = MeleeWeaponApi.Util
 
 ---@type metatable
 local BuzzaxeState = mod.__BuzzaxeState or {}
@@ -34,7 +34,7 @@ BuzzaxeState.__metatable = false
 local INITIAL_STATE = {
 
     -- Frame counter for various time-based actions
-    clock = nil, ---@type Clock
+    clock = nil, ---@type TickerClock
 
     -- Has the weapon been activated recently ?
     active = false,
@@ -102,7 +102,7 @@ function Buzzaxe:CleanupState(player)
     state.active = false
     state.beast = false
     state.shoot = false
-    state.clock:reset(self.Constants.CLOCK_ACTIVE_CHARGE_TICKS)
+    state.clock:Reset(self.Constants.CLOCK_ACTIVE_CHARGE_TICKS)
 
     ---@diagnostic disable-next-line: assign-type-mismatch Drop value to force garbage collection
     state.buzzaxe = state.buzzaxe:Remove()

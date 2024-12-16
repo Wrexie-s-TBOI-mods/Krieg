@@ -34,10 +34,14 @@ function Buzzaxe:CreateBuzzaxe(player)
 
     axe.CustomData.Clock = Util.Clock(30)
     axe.CustomData.Animations = {
-        CurrentSwing = nil, ---@type IterableList
+        CurrentSwing = nil, ---@type IterableList<string>
         Swing = IterableList { "Swing", "Swing2" },
         SwingDown = IterableList { "SwingDown", "SwingDown2" },
     }
+
+    local li = Util.IterableList { "sauce", "blanche" }
+    local index = li:RandomIndex()
+    local n1 = li:Current()
 
     ---@param weapon EntityMelee
     ---@param player EntityPlayer
@@ -55,14 +59,13 @@ function Buzzaxe:CreateBuzzaxe(player)
         weapon.DepthOffset = player.DepthOffset + depth
     end
 
-    function axe:OnPlayerAimStart(player)
+    function axe:OnPlayerAimStart(player, aim)
         local state = self:GetState()
         if state.IsSwinging or state.IsCharging then return end
 
         local rotation
         if player:HasCollectible(CollectibleType.COLLECTIBLE_ANALOG_STICK) then
-            rotation = player:GetAimDirection() --[[@as Vector]]
-            rotation = rotation:GetAngleDegrees()
+            rotation = aim:GetAngleDegrees()
         else
             rotation = Util.DirectionToAngleDegrees(state.PlayerHeadDirection)
         end

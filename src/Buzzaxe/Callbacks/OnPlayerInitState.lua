@@ -10,6 +10,7 @@ local mod = require "src.mod"
 local Buzzaxe = mod.__Buzzaxe or include "src.Buzzaxe.Buzzaxe"
 
 local Util = MeleeWeaponApi.Util
+print(Util.Inspect(MeleeWeaponApi))
 
 ---@param _mod      KriegModReference
 ---@param player    EntityPlayer
